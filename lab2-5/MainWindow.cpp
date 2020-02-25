@@ -70,14 +70,20 @@ void MainWindow::on_pushButton_2_clicked()
 
 void MainWindow::on_pushButton_clicked()
 {
+    graphicsScene->clear();
+    printAxis();
+    points.clear();
+
     if (ui->tableWidget->rowCount() < 3) {
         ui->_warning->setText(QString("Number cannot be less than 3.").toUtf8());
         return;
     }
     for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
-        QPointF p = fromBracketsToPoint(ui->tableWidget->itemAt(0, i)->text());
-        if (p != QPointF())
-            points.append(p);
+        for (int j = 0; j < ui->tableWidget->columnCount(); j++) {
+            QPointF p = fromBracketsToPoint(ui->tableWidget->item(i, j)->text());
+            if (p != QPointF())
+                points.append(p);
+        }
     }
     std::sort(points.begin(), points.end(), compare);
     drawLine();
@@ -102,12 +108,11 @@ void MainWindow::drawLine()
         return;
     }
 
-    for (int i = 0; i < points.size(); i++)
-        if (i > points.size() || (i + 1) > points.size())
-            return;
-        else graphicsScene->addLine(points[i].x(), points[i].y(),
-                                    points[i + 1].x(), points[i + 1].y(),
-                                    QPen(Qt::red, 1, Qt::SolidLine, Qt::SquareCap, Qt::MiterJoin));
+    line = QPainterPath(points[0]);
+
+    for (int i = 1; i < points.size(); i++)
+            line.lineTo(points[i]);
+    graphicsScene->addPath(line, QPen(Qt::red, 3));
 }
 
 bool MainWindow::compare(const QPointF& first, const QPointF& second)

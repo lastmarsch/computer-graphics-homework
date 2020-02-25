@@ -41,6 +41,7 @@ private:
     Ui::MainWindow *ui;
     QGraphicsScene *graphicsScene;
     QList<QPointF> points;
+    QPainterPath line;
 
     QPointF fromBracketsToPoint(QString str);
     void drawLine();
