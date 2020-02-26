@@ -5,6 +5,8 @@
 #include <QGraphicsScene>
 #include <QGraphicsItem>
 #include <QGraphicsSceneMouseEvent>
+#include <QTableWidgetItem>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -18,24 +20,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-    /*!
-     * \brief eventFilter Ловит event QEvent::GraphicsSceneMousePress от QGraphicsScene.
-     *                    Для удобства пишет в консоль координаты на сцене по клику мыши.
-     * \param target
-     * \param event
-     * \return
-     */
     bool eventFilter(QObject *target, QEvent *event);
-    /*!
-     * \brief printAxis Вывод осей X и Y на экран. Чисто косметическая функция.
-     */
     void printAxis();
     void addPointToTable(QPointF point);
 
 private slots:
     void on_pushButton_2_clicked();
-
     void on_pushButton_clicked();
+    void bezier();
+    void on_tableWidget_itemDoubleClicked(QTableWidgetItem *item);
+    void change(int id, double x, double y);
+
+signals:
+    void run();
 
 private:
     Ui::MainWindow *ui;
@@ -45,6 +42,14 @@ private:
 
     QPointF fromBracketsToPoint(QString str);
     void drawLine();
+    /*!
+     * \brief compare Компаратор для сортировки QPointF.
+     *                Не использовался, но пусть будет.
+     * \param first
+     * \param second
+     * \return
+     */
     static bool compare(const QPointF& first, const QPointF& second);
+
 };
 #endif // MAINWINDOW_H

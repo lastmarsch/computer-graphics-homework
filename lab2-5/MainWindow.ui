@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>990</width>
+    <width>1015</width>
     <height>501</height>
    </rect>
   </property>
@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>435</y>
+      <y>430</y>
       <width>201</width>
       <height>41</height>
      </rect>
@@ -32,8 +32,8 @@
      <rect>
       <x>230</x>
       <y>10</y>
-      <width>741</width>
-      <height>461</height>
+      <width>770</width>
+      <height>460</height>
      </rect>
     </property>
    </widget>
@@ -60,14 +60,21 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>10</y>
+      <y>0</y>
       <width>201</width>
-      <height>41</height>
+      <height>121</height>
      </rect>
     </property>
     <property name="text">
      <string>Список точек ломаной
-(доступно редактирование) </string>
+(Доступно редактирование :
+1. Двойной клик 
+по элементу таблицы.
+2. Клик 
+по графическому виджету.) </string>
+    </property>
+    <property name="scaledContents">
+     <bool>true</bool>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -77,7 +84,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>60</y>
+      <y>120</y>
       <width>201</width>
       <height>241</height>
      </rect>
@@ -101,7 +108,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>310</y>
+      <y>370</y>
       <width>201</width>
       <height>26</height>
      </rect>
