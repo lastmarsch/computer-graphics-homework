@@ -127,11 +127,23 @@ void OpenGLWidget::keyPressEvent(QKeyEvent *event)
 {
     QQuaternion q;
 
-    if (event->key() == Qt::Key_Up) { //вращение по у
+    if (event->key() == Qt::Key_Y) { //вращение по у
         q = QQuaternion::fromEulerAngles(0, yFigureRotation, 0);
     }
-    if (event->key() == Qt::Key_Right) { //вращение по х
+    if (event->key() == Qt::Key_X) { //вращение по х
         q = QQuaternion::fromEulerAngles(xFigureRotation, 0, 0);
+    }
+    if (event->key() == Qt::Key_Up) { //вращение по y
+        q = QQuaternion::fromEulerAngles(0, 5, 0);
+    }
+    if (event->key() == Qt::Key_Down) { //вращение по y
+        q = QQuaternion::fromEulerAngles(0, -5, 0);
+    }
+    if (event->key() == Qt::Key_Right) { //вращение по х
+        q = QQuaternion::fromEulerAngles(5, 0, 0);
+    }
+    if (event->key() == Qt::Key_Left) { //вращение по х
+        q = QQuaternion::fromEulerAngles(-5, 0, 0);
     }
 
     for (int i = 0; i < points.size(); i++)
