@@ -1,12 +1,13 @@
 #include "OpenGLWidget.h"
 #include <QDebug>
-
+#include <math.h>
+#include <QQuaternion>
 
 OpenGLWidget::OpenGLWidget()
 {
-    resize(800, 600);
-    xRotation = 0;
-    yRotation = 0;
+    resize(800, 800);
+    xRotation = xFigureRotation = 0;
+    yRotation = yFigureRotation = 0;
     zRotation = 0;
     scale = 1;
 }
@@ -18,6 +19,10 @@ void OpenGLWidget::initializeGL()
     glShadeModel(GL_FLAT); // убираем режим сглаживания цветов
     glEnable(GL_CULL_FACE); // говорим, что будем строить только внешние поверхности
     glPolygonMode(GL_FRONT_AND_BACK,GL_FILL); // фигуры будут закрашены с обеих сторон
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 void OpenGLWidget::resizeGL(int w, int h)
@@ -26,20 +31,27 @@ void OpenGLWidget::resizeGL(int w, int h)
     glViewport(0, 0, w, h); // установка точки обзора
     glMatrixMode(GL_PROJECTION); // установка режима матрицы
     glLoadIdentity(); // загрузка матрицы
-
 }
 
 void OpenGLWidget::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // очистка экрана
     glMatrixMode(GL_MODELVIEW); // задаем модельно-видовую матрицу
-    //    gluLookAt(3.0, 3.0, 3.0-4.5, 0.0, 0.0, -4.5, 0, 1, 0);
     glLoadIdentity();           // загрузка единичную матрицу
     glScalef(scale, scale, scale);        // масштабирование
     glRotatef(xRotation, 1.0f, 0.0f, 0.0f); // поворот по X
     glRotatef(yRotation, 0.0f, 1.0f, 0.0f); // поворот по Y
     glRotatef(zRotation, 0.0f, 0.0f, 1.0f); // поворот по Z
     drawAxis();
+
+    glPointSize(4);
+    glColor3b(1,0,0);
+    glBegin (GL_POINTS);
+    for (int i = 0; i < points.size(); i++) {
+        glVertex3f(points[i].x(), points[i].y(), points[i].z());
+    }
+    glEnd();
+    drawSurface();
 }
 
 void OpenGLWidget::mousePressEvent(QMouseEvent* pe) // нажатие клавиши мыши
@@ -49,22 +61,10 @@ void OpenGLWidget::mousePressEvent(QMouseEvent* pe) // нажатие клави
     qDebug() << mousePos;
 }
 
-//void OpenGLWidget::wheelEvent(QWheelEvent* pe) // вращение колёсика мыши
-//{
-//    // если колесико вращаем вперед -- умножаем переменную масштаба на 1.1
-//    // иначе -- делим на 1.1
-//    if (pe->delta() > 0)
-//        scale *= 1.1;
-//    else if (pe->delta() < 0)
-//        scale /= 1.1;
-
-//    updateGL();
-//}
-
 void OpenGLWidget::mouseMoveEvent(QMouseEvent* pe) // изменение положения стрелки мыши
 {
-    xRotation += 180/scale * (GLfloat)(pe->y()-mousePos.y()) / height(); // вычисляем углы поворота
-    zRotation += 180/scale * (GLfloat)(pe->x()-mousePos.x()) / width();
+    xRotation += 180 / scale * (GLfloat)(pe->y() - mousePos.y()) / height(); // вычисляем углы поворота
+    zRotation += 180 / scale * (GLfloat)(pe->x() - mousePos.x()) / width();
 
     mousePos = pe->pos();
 
@@ -95,3 +95,48 @@ void OpenGLWidget::drawAxis()
     glVertex3f( 0.0f,  0.0f, -1.0f);
     glEnd();
 }
+
+void OpenGLWidget::drawSurface()
+{
+    if (points.size() != 4)
+        return;
+    qglColor(Qt::magenta);
+    glPointSize(3);
+    glBegin(GL_POINTS);
+    for (double u = 0; u < 1; u += 0.01)
+        for (double v = 0; v < 1; v += 0.01) {
+            QVector3D r = (1 - u) * (1 - v) * points[0]
+                    + u * (1 - v) * points[1]
+                    + (1 - u) * v * points[2]
+                    + u * v * points[3];
+            glVertex3f(r.x(), r.y(), r.z());
+        }
+    glEnd();
+}
+
+void OpenGLWidget::drawing(QList<QVector3D> ps, double xR, double yR)
+{
+    points = ps;
+    xFigureRotation = xR;
+    yFigureRotation = yR;
+    qDebug() << points;
+    updateGL();
+}
+
+void OpenGLWidget::keyPressEvent(QKeyEvent *event)
+{
+    QQuaternion q;
+
+    if (event->key() == Qt::Key_Up) { //вращение по у
+        q = QQuaternion::fromEulerAngles(0, yFigureRotation, 0);
+    }
+    if (event->key() == Qt::Key_Right) { //вращение по х
+        q = QQuaternion::fromEulerAngles(xFigureRotation, 0, 0);
+    }
+
+    for (int i = 0; i < points.size(); i++)
+        points[i] = Quaternion::transformVec(q, points[i]);
+
+    updateGL();
+}
+

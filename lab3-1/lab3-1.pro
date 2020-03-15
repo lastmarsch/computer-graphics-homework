@@ -17,17 +17,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     OpenGLWidget.cpp \
+    addpoint.cpp \
+    changepoint.cpp \
     main.cpp \
-    MainWindow.cpp
+    mainwindow.cpp \
+    quaternion.cpp
 
 HEADERS += \
-    MainWindow.h \
-    OpenGLWidget.h
+    OpenGLWidget.h \
+    addpoint.h \
+    changepoint.h \
+    mainwindow.h \
+    quaternion.h
 
 FORMS += \
-    MainWindow.ui
+    addpoint.ui \
+    changepoint.ui \
+    mainwindow.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    lab3-1.pro.user
