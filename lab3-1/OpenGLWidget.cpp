@@ -1,7 +1,6 @@
 #include "OpenGLWidget.h"
 #include <QDebug>
 #include <math.h>
-#include <QQuaternion>
 
 OpenGLWidget::OpenGLWidget()
 {
@@ -125,25 +124,25 @@ void OpenGLWidget::drawing(QList<QVector3D> ps, double xR, double yR)
 
 void OpenGLWidget::keyPressEvent(QKeyEvent *event)
 {
-    QQuaternion q;
+    Quaternion q;
 
     if (event->key() == Qt::Key_Y) { //вращение по у
-        q = QQuaternion::fromEulerAngles(0, yFigureRotation, 0);
+        q = Quaternion::qFromAngle(0, yFigureRotation, 0);
     }
     if (event->key() == Qt::Key_X) { //вращение по х
-        q = QQuaternion::fromEulerAngles(xFigureRotation, 0, 0);
+        q = Quaternion::qFromAngle(xFigureRotation, 0, 0);
     }
     if (event->key() == Qt::Key_Up) { //вращение по y
-        q = QQuaternion::fromEulerAngles(0, 5, 0);
+        q = Quaternion::qFromAngle(0, 5, 0);
     }
     if (event->key() == Qt::Key_Down) { //вращение по y
-        q = QQuaternion::fromEulerAngles(0, -5, 0);
+        q = Quaternion::qFromAngle(0, -5, 0);
     }
     if (event->key() == Qt::Key_Right) { //вращение по х
-        q = QQuaternion::fromEulerAngles(5, 0, 0);
+        q = Quaternion::qFromAngle(5, 0, 0);
     }
     if (event->key() == Qt::Key_Left) { //вращение по х
-        q = QQuaternion::fromEulerAngles(-5, 0, 0);
+        q = Quaternion::qFromAngle(-5, 0, 0);
     }
 
     for (int i = 0; i < points.size(); i++)

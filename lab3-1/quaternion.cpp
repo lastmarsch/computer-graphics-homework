@@ -45,9 +45,9 @@ Quaternion Quaternion::conjugate()
 
 Quaternion Quaternion::qFromAngle(double angleX, double angleY, double angleZ)
 {
-    Quaternion X(cos(angleX / 2), 0, sin(angleX / 2), 0);
-    Quaternion Y(cos(angleY / 2), sin(angleY / 2), 0, 0);
-    Quaternion Z(cos(angleZ / 2), 0, 0, sin(angleZ / 2));
+    Quaternion X(cos(M_PI * angleX / 2 / 180), 0, sin(M_PI * angleX / 2 / 180), 0);
+    Quaternion Y(cos(M_PI * angleY / 2 / 180), sin(M_PI * angleY / 2 / 180), 0, 0);
+    Quaternion Z(cos(M_PI * angleZ / 2 / 180), 0, 0, sin(M_PI * angleZ / 2 / 180));
 
     Quaternion tmp = multiply(Z, Y);
     return multiply(tmp, X);
