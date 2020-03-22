@@ -27,7 +27,7 @@ HEADERS += \
     addpoint.h \
     changepoint.h \
     mainwindow.h \
-    vec3f.h
+    util.h
 
 FORMS += \
     addpoint.ui \

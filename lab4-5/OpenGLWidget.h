@@ -6,8 +6,7 @@
 #include <QWheelEvent>
 #include <QVector3D>
 #include <QKeyEvent>
-#include <vec3f.h>
-typedef Vec3<GLfloat> Vec3f;
+#include <util.h>
 
 class OpenGLWidget : public QGLWidget
 {
@@ -18,14 +17,21 @@ protected:
     void initializeGL();
     void resizeGL(int w, int h);
     void paintGL();
-    void cyrusBeck(Vec3f p0, Vec3f p1, Vec3f &q0, Vec3f &q1);
+    void cyrusBeck();
+    void get_normal_line();
+    void drawAxis();
+    typedef Vector normal;
+    typedef pair<normal, Point> NormalLine;
 
 public slots:
-    void drawing(QList<Vec3f> &, double num);
+    void drawing(QList<Point> &, double num);
 
 private:
     int number;
-    QList<Vec3f> points;
+    QList<Line> random_line_list;
+    QList<Line> clipped_line_list;
+    QList<Point> polygon_points;
+    QList<NormalLine> polygon_normal_lines;
 };
 
 #endif // OPENGLWIDGET_H

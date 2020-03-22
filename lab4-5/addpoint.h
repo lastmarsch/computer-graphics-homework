@@ -17,11 +17,9 @@ public:
 
 private slots:
     void on_buttonBox_accepted();
-
     void on_buttonBox_rejected();
 
 signals:
-
     void addItem(double x, double y);
 
 private:
